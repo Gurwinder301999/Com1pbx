@@ -1,0 +1,36 @@
+[Unit]
+Description=Com1 website (gunicorn)
+Documentation=https://github.com/Gurwinder301999/Com1pbx
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=notify
+User=com1
+Group=com1
+WorkingDirectory=/opt/com1
+Environment="FLASK_ENV=production"
+Environment="GUNICORN_BIND=127.0.0.1:8000"
+# Keep the secret out of the unit file:
+EnvironmentFile=/opt/com1/.env
+ExecStart=/opt/com1/.venv/bin/gunicorn -c /opt/com1/gunicorn.conf.py wsgi:app
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=10
+Restart=always
+RestartSec=3
+
+# Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/com1
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+LockPersonality=true
+
+[Install]
+WantedBy=multi-user.target

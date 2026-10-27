@@ -47,6 +47,53 @@ from data import (
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "com1-local-development-key")
 
+# ---------------------------------------------------------------- production
+# Behind nginx / a load balancer, trust the forwarded headers so url_for()
+# builds https links and the real host name.
+if os.environ.get("TRUST_PROXY", "1") == "1":
+    from werkzeug.middleware.proxy_fix import ProxyFix
+
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
+
+IS_PROD = os.environ.get("FLASK_ENV", "").lower() in ("production", "prod")
+
+app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE="Lax",
+    SESSION_COOKIE_SECURE=IS_PROD,
+    PERMANENT_SESSION_LIFETIME=60 * 60 * 8,
+    MAX_CONTENT_LENGTH=1 * 1024 * 1024,  # enquiry form is small; cap the body
+    PREFERRED_URL_SCHEME="https" if IS_PROD else "http",
+    TEMPLATES_AUTO_RELOAD=not IS_PROD,
+)
+
+if IS_PROD and app.secret_key == "com1-local-development-key":
+    raise RuntimeError(
+        "Refusing to start in production with the default secret key. "
+        "Set the SECRET_KEY environment variable."
+    )
+
+
+@app.after_request
+def add_headers(response):
+    """Security headers plus long-lived caching for static assets."""
+    response.headers.setdefault("X-Content-Type-Options", "nosniff")
+    response.headers.setdefault("X-Frame-Options", "SAMEORIGIN")
+    response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+    response.headers.setdefault(
+        "Permissions-Policy", "geolocation=(), microphone=(), camera=()"
+    )
+
+    if request.path.startswith("/static/"):
+        response.headers["Cache-Control"] = "public, max-age=604800, immutable"
+    elif request.endpoint in ("sitemap", "robots", "health"):
+        response.headers["Cache-Control"] = "public, max-age=3600"
+    else:
+        response.headers.setdefault("Cache-Control", "no-cache")
+
+    return response
+
+
 
 @app.context_processor
 def inject_globals():

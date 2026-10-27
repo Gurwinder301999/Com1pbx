@@ -1,0 +1,33 @@
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    environment:
+      FLASK_ENV: production
+      # Generate with: python3 -c "import secrets; print(secrets.token_urlsafe(48))"
+      SECRET_KEY: ${SECRET_KEY:?set SECRET_KEY in .env before starting}
+      WEB_CONCURRENCY: "4"
+      GUNICORN_BIND: 0.0.0.0:8000
+    ports:
+      - "127.0.0.1:8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=4).status==200 else 1)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # Optional: terminate TLS and put the app behind a hardened nginx.
+  # Enabled only when you run `docker compose --profile proxy up -d`
+  nginx:
+    image: nginx:1.27-alpine
+    profiles: ["proxy"]
+    restart: unless-stopped
+    depends_on:
+      - web
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./deploy/certs:/etc/nginx/certs:ro

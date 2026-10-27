@@ -22,12 +22,20 @@ python app.py
 
 Open <http://localhost:8000>. Change the port with `PORT=5000 python app.py`.
 
-Production:
+That is the development server only. **To run this on your own server, see
+[DEPLOY.md](DEPLOY.md)** — nginx + systemd, Docker, or a PaaS, with TLS.
+
+Production, in brief:
 
 ```bash
-pip install -r requirements-prod.txt
-gunicorn -w 4 -b 0.0.0.0:8000 wsgi:app     # or use the Procfile
+cp .env.example .env            # then set SECRET_KEY
+pip install -r requirements.txt -r requirements-prod.txt
+gunicorn -c gunicorn.conf.py wsgi:app
 ```
+
+Production mode refuses to boot without a `SECRET_KEY`, marks session cookies
+`Secure`, and builds all external URLs over `https` behind the proxy.
+
 
 ## Pages
 
@@ -59,21 +67,23 @@ gunicorn -w 4 -b 0.0.0.0:8000 wsgi:app     # or use the Procfile
 ## Structure
 
 ```
-app.py                  routes, filtering, enquiry handling, JSON/SEO endpoints
+app.py                  routes, filtering, enquiry handling, JSON/SEO endpoints,
+                        production hardening (ProxyFix, headers, caching, guards)
 data.py                 all content and the product catalogue
 wsgi.py                 WSGI entry point for gunicorn
+gunicorn.conf.py        worker/timeout/logging config, env-overridable
 tests.py                smoke tests: routes, filters, form, markup, data integrity
-templates/
-  base.html             shell: head/meta/JSON-LD, header, nav, footer, flash
-  _macros.html          icon, media and product-card macros
-  index.html            landing page
-  products.html         catalogue with filters and sort
-  product.html          product detail
-  solutions.html        solutions and dialing-mode comparison
-  contact.html          enquiry form and contacts
-  404.html / 500.html   error pages
+Dockerfile              production image, non-root, healthcheck
+docker-compose.yml      web service + optional nginx/TLS profile
+Procfile                PaaS start command
+.env.example            environment template
+DEPLOY.md               full server deployment guide
+deploy/nginx.conf       reverse proxy, TLS, static caching, error page
+deploy/com1.service     systemd unit, hardened
+templates/              Jinja templates (see below)
 static/css/style.css    the whole design system, tokens at the top
 static/js/main.js       mobile nav, sticky header, scroll reveal, live filter, sort
+static/50x.html         standalone page nginx serves if the app is down
 ```
 
 ## Tests
