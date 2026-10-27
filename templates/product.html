@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% from "_macros.html" import media, product_card, icon %}
+
+{% block title %}{{ product.name }} — {{ company.name }}{% endblock %}
+{% block description %}{{ product.summary }}{% endblock %}
+
+{% block body %}
+
+<section class="section section-tight detail-section">
+  <div class="container">
+
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="{{ url_for('index') }}">Home</a><span>/</span>
+      <a href="{{ url_for('products') }}">Products</a><span>/</span>
+      <a href="{{ url_for('products', category=product.category) }}">{{ category_meta.name if category_meta else product.category }}</a><span>/</span>
+      <span>{{ product.name }}</span>
+    </nav>
+
+    <div class="detail-grid">
+
+      <div class="detail-media">
+        {{ media(product.image, product.name, 'detail-image') }}
+        {% if product.highlights %}
+          <div class="highlight-box">
+            <h3>Highlights</h3>
+            <ul>
+              {% for point in product.highlights %}
+                <li>{{ point }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="detail-copy">
+        <span class="card-brand">{{ product.brand }}</span>
+        <h1 class="h1 detail-title">{{ product.name }}</h1>
+        <p class="lede">{{ product.summary }}</p>
+
+        {% if product.tags %}
+          <div class="tag-row">
+            {% for tag in product.tags %}<span class="tag">{{ tag }}</span>{% endfor %}
+          </div>
+        {% endif %}
+
+        <div class="detail-actions">
+          <a class="btn btn-dark" href="{{ url_for('contact', product=product.name) }}">
+            Enquire about this product
+            {{ icon('arrow', 16) }}
+          </a>
+          <a class="btn btn-ghost" href="tel:{{ company.phone_href }}">Call {{ company.phone }}</a>
+        </div>
+
+        {% if product.description %}
+          <p class="body-copy">{{ product.description }}</p>
+        {% endif %}
+
+        {% if product.specs %}
+          <div class="spec-table-wrap">
+            <h3 class="block-title">Specification</h3>
+            <table class="spec-table">
+              <tbody>
+                {% for label, value in product.specs %}
+                  <tr><th>{{ label }}</th><td>{{ value }}</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="notice">
+            <strong>Full datasheet on request.</strong>
+            Detailed specifications, pricing and availability for this model are issued
+            by the Com1 team — send an enquiry and we will revert with the complete sheet.
+          </div>
+        {% endif %}
+
+        {% if product.source %}
+          <p class="source-line">
+            Reference: <a href="{{ product.source }}" target="_blank" rel="noopener">source listing on com1pbx.com</a>
+          </p>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if product.features %}
+      <div class="feature-list-block">
+        <h2 class="h2">Features</h2>
+        <ul class="feature-list">
+          {% for feature in product.features %}<li>{{ feature }}</li>{% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% if related %}
+<section class="section related">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="h2">More in this range</h2>
+      <a class="text-link" href="{{ url_for('products', category=product.category) }}">
+        See all {{ category_meta.name if category_meta else 'products' }} {{ icon('arrow', 15) }}
+      </a>
+    </div>
+    <div class="grid-3">
+      {% for item in related %}{{ product_card(item) }}{% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

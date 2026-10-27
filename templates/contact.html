@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% from "_macros.html" import icon %}
+
+{% block title %}Contact — {{ company.name }}{% endblock %}
+{% block description %}Talk to {{ company.name }} about IP PBX, call centre, paging or gateway requirements.{% endblock %}
+
+{% block body %}
+
+<section class="page-head">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="{{ url_for('index') }}">Home</a><span>/</span><span>Contact</span>
+    </nav>
+    <h1 class="display-sm page-title">Let's talk.</h1>
+    <p class="lede narrow">
+      Product enquiries, pricing, dealer support or a full system replacement — one
+      message is enough to start.
+    </p>
+  </div>
+</section>
+
+<section class="section section-tight">
+  <div class="container contact-grid">
+
+    <form class="contact-form" method="post" action="{{ url_for('contact') }}">
+      <div class="field-row">
+        <label class="field">
+          <span>Name</span>
+          <input type="text" name="name" required placeholder="Your name">
+        </label>
+        <label class="field">
+          <span>Email</span>
+          <input type="email" name="email" required placeholder="you@company.com">
+        </label>
+      </div>
+
+      <div class="field-row">
+        <label class="field">
+          <span>Company</span>
+          <input type="text" name="company" placeholder="Optional">
+        </label>
+        <label class="field">
+          <span>Phone</span>
+          <input type="tel" name="phone" placeholder="Optional">
+        </label>
+      </div>
+
+      <label class="field">
+        <span>Interested in</span>
+        <input type="text" name="interest" value="{{ preselect or '' }}"
+               placeholder="e.g. Yealink CP965, or an IP PBX replacement">
+      </label>
+
+      <label class="field">
+        <span>Message</span>
+        <textarea name="message" rows="5" required
+                  placeholder="Extensions, trunk types, timeline — whatever you have."></textarea>
+      </label>
+
+      <button class="btn btn-dark" type="submit">
+        Send enquiry
+        {{ icon('arrow', 16) }}
+      </button>
+      <p class="form-note">This demo form validates and confirms in-page. Connect it to
+        your mail provider or CRM before going live.</p>
+    </form>
+
+    <aside class="contact-aside">
+      <div class="contact-block">
+        <h3>Direct</h3>
+        <p><a href="tel:{{ company.phone_href }}">{{ company.phone }}</a></p>
+        <p><a href="mailto:{{ company.email }}">{{ company.email }}</a></p>
+        <p class="muted">{{ company.address }}</p>
+      </div>
+
+      <div class="contact-block">
+        <h3>Dealer network</h3>
+        <p class="muted">Regional partners handling supply and installation:</p>
+        <ul class="plain-list">
+          {% for dealer in dealers %}<li>{{ dealer }}</li>{% endfor %}
+        </ul>
+      </div>
+
+      <div class="contact-block">
+        <h3>Response time</h3>
+        <p class="muted">Enquiries are answered within one business day.</p>
+      </div>
+    </aside>
+
+  </div>
+</section>
+
+{% endblock %}

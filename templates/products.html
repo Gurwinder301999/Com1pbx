@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% from "_macros.html" import product_card, icon %}
+
+{% block title %}{{ category_meta.name if category_meta else 'All products' }} — {{ company.name }}{% endblock %}
+{% block description %}IP phones, GSM, FXS, FXO, PRI and PA gateways supplied and supported by {{ company.name }}.{% endblock %}
+
+{% block body %}
+
+<section class="page-head">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="{{ url_for('index') }}">Home</a>
+      <span>/</span>
+      <span>{{ category_meta.name if category_meta else 'Products' }}</span>
+    </nav>
+
+    <h1 class="h1">
+      {% if category_meta %}{{ category_meta.name }}{% else %}All products{% endif %}
+    </h1>
+    <p class="lede narrow">
+      {% if category_meta %}
+        {{ category_meta.name }} from the brands Com1 supports — provisioned,
+        installed and backed locally.
+      {% else %}
+        Every endpoint and gateway in the Com1 catalogue. Use any SIP manufacturer you
+        like; nothing here is locked to a single supplier.
+      {% endif %}
+    </p>
+  </div>
+</section>
+
+<section class="section section-tight">
+  <div class="container">
+
+    <div class="filter-bar">
+      <div class="filter-pills">
+        <a class="pill {{ 'is-on' if not active_category }}"
+           href="{{ url_for('products', brand=active_brand or none, q=query or none) }}">All</a>
+        {% for category in categories %}
+          <a class="pill {{ 'is-on' if active_category == category.slug }}"
+             href="{{ url_for('products', category=category.slug, brand=active_brand or none) }}">
+            {{ category.name }}<span class="pill-count">{{ counts.get(category.slug, 0) }}</span>
+          </a>
+        {% endfor %}
+      </div>
+
+      <form class="filter-search" method="get" action="{{ url_for('products') }}">
+        {% if active_category %}<input type="hidden" name="category" value="{{ active_category }}">{% endif %}
+        {% if active_brand %}<input type="hidden" name="brand" value="{{ active_brand }}">{% endif %}
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
+        <input type="search" name="q" id="productSearch" value="{{ query }}"
+               placeholder="Filter by model or brand…" autocomplete="off">
+      </form>
+    </div>
+
+    <div class="filter-row">
+      <span class="filter-label">Brand</span>
+      <div class="filter-pills">
+        <a class="pill pill-sm {{ 'is-on' if not active_brand }}"
+           href="{{ url_for('products', category=active_category or none, q=query or none) }}">Any</a>
+        {% for brand in brands %}
+          <a class="pill pill-sm {{ 'is-on' if active_brand|lower == brand|lower }}"
+             href="{{ url_for('products', category=active_category or none, brand=brand) }}">{{ brand }}</a>
+        {% endfor %}
+      </div>
+      <span class="result-count" id="resultCount">{{ products|length }} product{{ '' if products|length == 1 else 's' }}</span>
+    </div>
+
+    {% if products %}
+      <div class="grid-3 product-grid" id="productGrid">
+        {% for item in products %}
+          {{ product_card(item) }}
+        {% endfor %}
+      </div>
+      <p class="empty-state" id="emptyState" hidden>
+        No products match that filter. <a href="{{ url_for('products') }}">Reset</a>.
+      </p>
+    {% else %}
+      <div class="empty-state empty-box">
+        <h3>Nothing listed here yet</h3>
+        <p>
+          {{ company.name }} still supplies this range on request — the full model list
+          lives on
+          <a href="{{ company.site }}" target="_blank" rel="noopener">com1pbx.com</a>.
+        </p>
+        <a class="btn btn-dark btn-sm" href="{{ url_for('contact') }}">Ask for a quote</a>
+      </div>
+    {% endif %}
+
+    {% if other_categories %}
+      <div class="also-supplied">
+        <span class="eyebrow">Also supplied</span>
+        <p>
+          {% for category in other_categories %}
+            {{ category.name }}{{ ', ' if not loop.last }}
+          {% endfor %}
+          — model lists and pricing on request.
+          <a href="{{ url_for('contact') }}">Ask the team</a>.
+        </p>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock %}

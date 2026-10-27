@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+{% from "_macros.html" import media, product_card, icon %}
+
+{% block body %}
+
+<!-- ============================== HERO ============================== -->
+<section class="hero">
+  <div class="container hero-grid">
+
+    <div class="hero-copy">
+      <span class="eyebrow">{{ hero.eyebrow }}</span>
+      <h1 class="display">{{ hero.title }}</h1>
+      <p class="lede">{{ hero.body }}</p>
+
+      <div class="hero-actions">
+        <a class="btn btn-dark" href="{{ url_for('products') }}">
+          Explore Products
+          {{ icon('arrow', 16) }}
+        </a>
+        <a class="btn btn-ghost" href="{{ url_for('solutions') }}">
+          <span class="play-dot" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </span>
+          See the platform
+        </a>
+      </div>
+
+      <dl class="hero-stats">
+        {% for stat in stats[:3] %}
+          <div>
+            <dt>{{ stat.value }}</dt>
+            <dd>{{ stat.label }}</dd>
+          </div>
+        {% endfor %}
+      </dl>
+    </div>
+
+    <div class="hero-visual reveal">
+      <div class="hero-frame">
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="hero-device">
+          {{ media(hero_image, 'Yealink CP965 Conference') }}
+        </div>
+        <div class="hero-chip">
+          <span class="dot-live" aria-hidden="true"></span>
+          <div>
+            <strong>Platform online</strong>
+            <small>Extensions, trunks and paging in one place</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========================== FEATURE STRIP ========================= -->
+<section class="feature-strip">
+  <div class="container strip-grid">
+    {% for feature in feature_strip %}
+      <article class="strip-item">
+        <span class="strip-icon" aria-hidden="true">{{ icon(feature.icon, 22) }}</span>
+        <h3>{{ feature.title }}</h3>
+        <p>{{ feature.body }}</p>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ======================== FEATURED PLATFORM ======================= -->
+<section class="section">
+  <div class="container">
+    <div class="platform-grid">
+
+      <div class="platform-copy">
+        <span class="eyebrow">Featured platform</span>
+        <h2 class="h2 platform-title">Com1 IP PBX</h2>
+        <p class="platform-tag">Power. Scale. Open standards.</p>
+        <p class="body-copy">
+          A fully native IP PBX that replaces PCM/TDM EPABX hardware outright. It runs
+          on any standard desktop, server or virtual machine, terminates every trunk
+          type on one platform, and exposes APIs so your CRM can drive the phone rather
+          than the other way round.
+        </p>
+
+        <a class="btn btn-dark btn-sm" href="{{ url_for('solutions') }}">
+          Learn more
+          {{ icon('arrow', 15) }}
+        </a>
+
+        <div class="swatches">
+          <span class="swatches-label">Available deployments</span>
+          <div class="swatch-row">
+            {% for option in deployments %}
+              <span class="swatch" style="background: {{ option.colour }}" title="{{ option.name }}"></span>
+            {% endfor %}
+          </div>
+          <small>On-premise · Virtual machine · Public cloud · Hybrid</small>
+        </div>
+      </div>
+
+      <div class="platform-visual reveal">
+        <div class="dash">
+          <div class="dash-head">
+            <span class="dash-title">Genie · Live dashboard</span>
+            <span class="dash-pill"><span class="dot-live"></span> Live</span>
+          </div>
+
+          <div class="dash-stats">
+            <div><strong>128</strong><small>Extensions</small></div>
+            <div><strong>12</strong><small>Active agents</small></div>
+            <div><strong>3</strong><small>Queues</small></div>
+          </div>
+
+          <div class="dash-bars" aria-hidden="true">
+            <span style="height: 38%"></span>
+            <span style="height: 62%"></span>
+            <span style="height: 48%"></span>
+            <span style="height: 78%"></span>
+            <span style="height: 56%"></span>
+            <span style="height: 88%"></span>
+            <span style="height: 66%"></span>
+            <span style="height: 94%"></span>
+            <span style="height: 72%"></span>
+            <span style="height: 54%"></span>
+          </div>
+
+          <div class="dash-rows">
+            {% for label, value, state in dashboard_rows %}
+              <div class="dash-row">
+                <span>{{ label }}</span>
+                <span class="tag-{{ state }}">{{ value }}</span>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div class="platform-specs">
+        {% for spec in platform_specs %}
+          <div class="mini-spec">
+            <span class="mini-icon" aria-hidden="true">{{ icon(spec.icon, 20) }}</span>
+            <div>
+              <h4>{{ spec.title }}</h4>
+              <p>{{ spec.body }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =========================== THE RANGE =========================== -->
+<section class="section range">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">The catalogue</span>
+        <h2 class="h2">Endpoints and gateways</h2>
+      </div>
+      <a class="text-link" href="{{ url_for('products') }}">
+        Browse all {{ total_products }} products
+        {{ icon('arrow', 15) }}
+      </a>
+    </div>
+
+    <div class="category-row">
+      {% for category in categories %}
+        <a class="category-chip" href="{{ url_for('products', category=category.slug) }}">
+          {{ category.name }}
+          <span>{{ counts.get(category.slug, 0) }}</span>
+        </a>
+      {% endfor %}
+      {% if other_categories %}
+        <a class="category-chip category-chip-muted" href="{{ url_for('contact') }}">
+          + PRI, PA, intercom &amp; call boxes
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="grid-3">
+      {% for item in spotlight %}
+        {{ product_card(item) }}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============================ DARK BAND ========================== -->
+<section class="section band-section">
+  <div class="container">
+    <div class="cta-band">
+      <div class="cta-copy">
+        <span class="eyebrow eyebrow-light">Built for real business</span>
+        <h2 class="display-sm">Designed for what<br>moves your business.</h2>
+        <p>
+          Whether it is an office floor, a call centre or a warehouse paging zone —
+          Com1 sits underneath it all, on hardware you already own.
+        </p>
+        <a class="btn btn-light" href="{{ url_for('products') }}">
+          Discover the Com1 range
+          {{ icon('arrow', 16) }}
+        </a>
+      </div>
+
+      <div class="cta-visual" aria-hidden="true">
+        <div class="cta-ring"></div>
+        {{ media(band_image, 'Grandstream GRP2670') }}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= BRANDS ============================ -->
+<section class="section brands">
+  <div class="container">
+    <span class="eyebrow center">Open endpoints, your choice of manufacturer</span>
+    <div class="brand-row">
+      {% for brand in brands %}
+        <a class="brand-word" href="{{ url_for('products', brand=brand) }}">{{ brand }}</a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

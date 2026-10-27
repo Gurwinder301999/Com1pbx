@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% from "_macros.html" import icon %}
+
+{% block title %}Solutions — {{ company.name }}{% endblock %}
+{% block description %}IP PBX, call centre automation, IP paging, bridge conferencing, ticketing and legacy gateways from {{ company.name }}.{% endblock %}
+
+{% block body %}
+
+<section class="page-head">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="{{ url_for('index') }}">Home</a><span>/</span><span>Solutions</span>
+    </nav>
+    <h1 class="display-sm page-title">One platform,<br>every conversation.</h1>
+    <p class="lede narrow">
+      Telephony, contact centre automation, paging and conferencing share the same
+      backbone — which is why a change in one is a setting, not a project, in the others.
+    </p>
+  </div>
+</section>
+
+<section class="section section-tight">
+  <div class="container">
+    <div class="solution-grid">
+      {% for solution in solutions %}
+        <article class="solution-card reveal" id="{{ solution.slug }}">
+          <span class="eyebrow">{{ solution.eyebrow }}</span>
+          <h2 class="h3">{{ solution.title }}</h2>
+          <p>{{ solution.body }}</p>
+          <ul class="tick-list">
+            {% for point in solution.points %}<li>{{ point }}</li>{% endfor %}
+          </ul>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ===================== DIALING MODES COMPARISON ==================== -->
+<section class="section compare-section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Call centre detail</span>
+        <h2 class="h2">Predictive, progressive or preview?</h2>
+      </div>
+      <a class="text-link" href="{{ url_for('contact') }}">Discuss your process {{ icon('arrow', 15) }}</a>
+    </div>
+
+    <div class="table-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Mode</th>
+            <th>Dialing method</th>
+            <th>Dropped calls</th>
+            <th>Best suited to</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in dialing_modes %}
+            <tr>
+              <th>{{ row.mode }}</th>
+              <td>{{ row.method }}</td>
+              <td>{{ row.risk }}</td>
+              <td>{{ row.best }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">
+      Com1 lets you run different modes side by side across campaigns, and switch a
+      campaign between them at any time.
+    </p>
+  </div>
+</section>
+
+<!-- ============================ DARK BAND =========================== -->
+<section class="section band-section">
+  <div class="container">
+    <div class="cta-band cta-band-plain">
+      <div class="cta-copy">
+        <span class="eyebrow eyebrow-light">Next step</span>
+        <h2 class="display-sm">Tell us what you<br>are replacing.</h2>
+        <p>
+          Send us the current system, the extension count and the trunk types. We will
+          come back with a like-for-like design and an honest comparison.
+        </p>
+        <a class="btn btn-light" href="{{ url_for('contact') }}">
+          Start an enquiry
+          {{ icon('arrow', 16) }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

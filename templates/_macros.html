@@ -1,0 +1,60 @@
+{# ------------------------------------------------------------------ icons #}
+{% macro icon(name, size=22) %}
+  {% if name == 'chip' %}
+    <svg viewBox="0 0 24 24" width="{{ size }}" height="{{ size }}" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v3M14 3v3M10 18v3M14 18v3M3 10h3M3 14h3M18 10h3M18 14h3"/></svg>
+  {% elif name == 'headset' %}
+    <svg viewBox="0 0 24 24" width="{{ size }}" height="{{ size }}" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 13a8 8 0 0 1 16 0"/><rect x="3" y="13" width="4" height="6" rx="2"/><rect x="17" y="13" width="4" height="6" rx="2"/><path d="M19 19a3 3 0 0 1-3 3h-3"/></svg>
+  {% elif name == 'speaker' %}
+    <svg viewBox="0 0 24 24" width="{{ size }}" height="{{ size }}" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 10v4h3l5 4V6L7 10H4z"/><path d="M16 9a4 4 0 0 1 0 6M19 6.5a7.5 7.5 0 0 1 0 11"/></svg>
+  {% elif name == 'open' %}
+    <svg viewBox="0 0 24 24" width="{{ size }}" height="{{ size }}" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 12l2.5 2.5L15.5 9"/></svg>
+  {% elif name == 'server' %}
+    <svg viewBox="0 0 24 24" width="{{ size }}" height="{{ size }}" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></svg>
+  {% elif name == 'lines' %}
+    <svg viewBox="0 0 24 24" width="{{ size }}" height="{{ size }}" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+  {% elif name == 'api' %}
+    <svg viewBox="0 0 24 24" width="{{ size }}" height="{{ size }}" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M9 8l-4 4 4 4M15 8l4 4-4 4"/></svg>
+  {% elif name == 'shield' %}
+    <svg viewBox="0 0 24 24" width="{{ size }}" height="{{ size }}" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 3l7 3v6c0 4.2-2.9 7.6-7 9-4.1-1.4-7-4.8-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+  {% elif name == 'arrow' %}
+    <svg viewBox="0 0 24 24" width="{{ size }}" height="{{ size }}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+  {% endif %}
+{% endmacro %}
+
+
+{# ------------------------------------------------------------------ media #}
+{% macro media(src, name, extra_class='') %}
+  <div class="media {{ extra_class }}">
+    <span class="media-letter" aria-hidden="true">{{ name[:1] }}</span>
+    {% if src %}
+      <img src="{{ src }}" alt="{{ name }}" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'">
+    {% endif %}
+  </div>
+{% endmacro %}
+
+
+{# ----------------------------------------------------------- product card #}
+{% macro product_card(item) %}
+  <a class="card reveal" href="{{ url_for('product', slug=item.slug) }}">
+    {{ media(item.image, item.name, 'card-media') }}
+    <div class="card-body">
+      <span class="card-brand">{{ item.brand }}</span>
+      <h3 class="card-name">{{ item.name }}</h3>
+      <p class="card-summary">{{ item.summary }}</p>
+      <span class="card-link">
+        View details
+        {{ icon('arrow', 15) }}
+      </span>
+    </div>
+  </a>
+{% endmacro %}
+
+
+{# ------------------------------------------------------------- pill links #}
+{% macro category_pill(category, active_slug, active_brand, counts) %}
+  <a class="pill {{ 'is-on' if active_slug == category.slug }}"
+     href="{{ url_for('products', category=category.slug, brand=active_brand or none) }}">
+    {{ category.name }}
+    <span class="pill-count">{{ counts.get(category.slug, 0) }}</span>
+  </a>
+{% endmacro %}
