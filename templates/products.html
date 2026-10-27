@@ -63,6 +63,14 @@
              href="{{ url_for('products', category=active_category or none, brand=brand) }}">{{ brand }}</a>
         {% endfor %}
       </div>
+      <label class="sort-control">
+        <span class="filter-label">Sort</span>
+        <select id="sortSelect">
+          <option value="" {{ 'selected' if not sort }}>Default</option>
+          <option value="name" {{ 'selected' if sort == 'name' }}>Name A–Z</option>
+          <option value="brand" {{ 'selected' if sort == 'brand' }}>Brand</option>
+        </select>
+      </label>
       <span class="result-count" id="resultCount">{{ products|length }} product{{ '' if products|length == 1 else 's' }}</span>
     </div>
 

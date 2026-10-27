@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Something went wrong — {{ company.name }}{% endblock %}
+
+{% block body %}
+<section class="section">
+  <div class="container not-found">
+    <span class="eyebrow">500</span>
+    <h1 class="display-sm">Something went wrong on our side.</h1>
+    <p class="lede narrow">
+      The page could not be rendered. Try again, or head back to the catalogue.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-dark" href="{{ url_for('products') }}">Browse products</a>
+      <a class="btn btn-ghost" href="{{ url_for('contact') }}">Contact us</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

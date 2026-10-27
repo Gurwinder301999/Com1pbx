@@ -73,11 +73,14 @@ def inject_globals():
 @app.route("/")
 def index():
     featured = [item for item in PRODUCTS if item["featured"]]
+    # Six picks so the three-column grid fills two clean rows.
     spotlight_slugs = [
         "yealink-cp965-conference",
         "fanvil-a320",
         "grandstream-grp2670",
         "snom-d815w",
+        "com1-cm-30hsr",
+        "dinstar-uc2000-vf-8",
     ]
     spotlight = [PRODUCTS_BY_SLUG[s] for s in spotlight_slugs if s in PRODUCTS_BY_SLUG]
     hero_image = PRODUCTS_BY_SLUG["yealink-cp965-conference"]["image"]
@@ -227,9 +230,56 @@ def api_products():
     )
 
 
+@app.route("/health")
+def health():
+    return jsonify({"status": "ok", "products": len(PRODUCTS)})
+
+
+@app.route("/robots.txt")
+def robots():
+    body = "User-agent: *\nAllow: /\nSitemap: {}\n".format(
+        url_for("sitemap", _external=True)
+    )
+    return app.response_class(body, mimetype="text/plain")
+
+
+@app.route("/sitemap.xml")
+def sitemap():
+    pages = [
+        (url_for("index"), "1.0"),
+        (url_for("products"), "0.9"),
+        (url_for("solutions"), "0.8"),
+        (url_for("contact"), "0.7"),
+    ]
+    for category in CATEGORIES:
+        pages.append((url_for("products", category=category["slug"]), "0.7"))
+    for item in PRODUCTS:
+        pages.append((url_for("product", slug=item["slug"]), "0.6"))
+
+    xml = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ]
+    for loc, priority in pages:
+        xml.append(
+            "  <url><loc>{}</loc><priority>{}</priority></url>".format(
+                url_for("index", _external=True).rstrip("/") + loc, priority
+            )
+        )
+    xml.append("</urlset>")
+
+    return app.response_class("\n".join(xml), mimetype="application/xml")
+
+
 @app.errorhandler(404)
 def not_found(_error):
     return render_template("404.html"), 404
+
+
+@app.errorhandler(500)
+def server_error(_error):
+    return render_template("500.html"), 500
+
 
 
 if __name__ == "__main__":

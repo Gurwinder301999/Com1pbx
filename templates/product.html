@@ -3,8 +3,24 @@
 
 {% block title %}{{ product.name }} — {{ company.name }}{% endblock %}
 {% block description %}{{ product.summary }}{% endblock %}
+{% block og_image %}
+  {% if product.image %}<meta property="og:image" content="{{ product.image }}">{% endif %}
+{% endblock %}
 
 {% block body %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "{{ product.name }}",
+  "brand": { "@type": "Brand", "name": "{{ product.brand }}" },
+  "description": "{{ product.summary }}",
+  {% if product.image %}"image": "{{ product.image }}",{% endif %}
+  "category": "{{ category_meta.name if category_meta else product.category }}"
+}
+</script>
+
 
 <section class="section section-tight detail-section">
   <div class="container">

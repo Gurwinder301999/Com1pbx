@@ -1195,3 +1195,36 @@ ul { margin: 0; padding: 0; list-style: none; }
   .result-count { margin-left: 0; }
   .detail-image { padding: 28px; }
 }
+
+/* --------------------------------- sorting ------------------------------- */
+
+.sort-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 4px;
+}
+
+.sort-control select {
+  font-family: var(--font);
+  font-size: .8rem;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--pill);
+  padding: .36rem 1.6rem .36rem .8rem;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2376766f' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right .55rem center;
+  background-size: 12px;
+}
+
+.sort-control select:hover { border-color: var(--line-strong); }
+
+@media (max-width: 640px) {
+  .sort-control { margin-left: 0; }
+}

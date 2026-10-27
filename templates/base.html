@@ -5,6 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{{ company.name }} — IP PBX, call centre and IP paging{% endblock %}</title>
   <meta name="description" content="{% block description %}{{ company.name }} delivers native IP PBX, call centre automation, IP paging and bridge conferencing on open standards and standard hardware.{% endblock %}">
+  <link rel="canonical" href="{{ request.url }}">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#f6f6f4">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ company.name }}">
+  <meta property="og:title" content="{{ self.title() }}">
+  <meta property="og:description" content="{{ self.description() }}">
+  <meta property="og:url" content="{{ request.url }}">
+  {% block og_image %}<meta property="og:image" content="https://website.com1pbx.com/assets/product/image/ip_phone/yealink/SP1169.webp">{% endblock %}
+  <meta name="twitter:card" content="summary_large_image">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "{{ company.name }}",
+    "legalName": "{{ company.legal }}",
+    "url": "{{ company.site }}",
+    "email": "{{ company.email }}",
+    "telephone": "{{ company.phone }}",
+    "address": { "@type": "PostalAddress", "addressLocality": "Chennai", "addressRegion": "Tamil Nadu", "addressCountry": "IN" }
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">

@@ -105,6 +105,21 @@
     });
   }
 
+  /* -------------------------------- sorting ------------------------------ */
+  var sortSelect = document.getElementById("sortSelect");
+
+  if (sortSelect) {
+    sortSelect.addEventListener("change", function () {
+      var url = new URL(window.location.href);
+      if (sortSelect.value) {
+        url.searchParams.set("sort", sortSelect.value);
+      } else {
+        url.searchParams.delete("sort");
+      }
+      window.location.href = url.toString();
+    });
+  }
+
   /* --------------------- graceful product image fallback ----------------- */
   Array.prototype.slice
     .call(document.querySelectorAll(".media img"))
