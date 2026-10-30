@@ -33,6 +33,14 @@ test('GitHub Pages can serve every local HTML and CSS asset under the repository
   );
   assert.ok(checkedHtml.filter(Boolean).length >= 10);
 
+  const sourceSets = [...html.matchAll(/srcset=["']([^"']+)["']/g)].flatMap((match) =>
+    match[1].split(',').map((candidate) => candidate.trim().split(/\s+/)[0]),
+  );
+  const checkedSources = await Promise.all(
+    sourceSets.map((reference) => checkLocalReference(reference, pagesRoot)),
+  );
+  assert.ok(checkedSources.filter(Boolean).length >= 24);
+
   const stylesheet = await readFile(resolve(root, 'src/style.css'), 'utf8');
   const cssReferences = [...stylesheet.matchAll(/url\(\s*["']?([^"')]+)["']?\s*\)/g)].map(
     (match) => match[1],
@@ -45,8 +53,11 @@ test('GitHub Pages can serve every local HTML and CSS asset under the repository
   await access(resolve(root, '.nojekyll'));
 });
 
-test('the directly served browser script has no build-only imports', async () => {
-  const script = await readFile(resolve(root, 'src/main.js'), 'utf8');
-  assert.doesNotMatch(script, /^\s*import\s+['"](?:@|[^./])/m);
-  assert.doesNotMatch(script, /^\s*import\s+['"][^'"]+\.css['"]/m);
+test('directly served browser scripts have no build-only imports', async () => {
+  for (const path of ['src/main.js', 'src/react-loader.js', 'vendor/react-ui.js']) {
+    const script = await readFile(resolve(root, path), 'utf8');
+    assert.doesNotMatch(script, /^\s*import\s+['"](?:@|[^./])/m);
+    assert.doesNotMatch(script, /^\s*import\s+['"][^'"]+\.css['"]/m);
+    assert.doesNotMatch(script, /^\s*import\s+.+?\s+from\s+['"](?:@|[^./])/m);
+  }
 });

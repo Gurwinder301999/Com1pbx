@@ -6,11 +6,23 @@
     <meta name="theme-color" content="#0b0c0e" />
     <meta
       name="description"
-      content="Explore the Com1 hardware appliance: a 2U rack-mount system with standard components, 256 GB storage and flexible network connectivity."
+      content="Explore the Comone hardware appliance: a 2U rack-mount system with standard components, 256 GB storage and flexible network connectivity."
     />
-    <title>Com1 | Hardware Appliance</title>
+    <title>Comone | Hardware Appliance</title>
+    <link rel="stylesheet" href="./vendor/animate.min.css" />
     <link rel="stylesheet" href="./src/style.css" />
-    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="./favicon.ico" sizes="48x48" />
+    <link rel="icon" href="./icons/favicon-16x16.png" type="image/png" sizes="16x16" />
+    <link rel="icon" href="./icons/favicon-32x32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" sizes="any" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" sizes="180x180" />
+    <link
+      rel="preload"
+      href="./fonts/manrope-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <link rel="preload" href="./images/appliance-hero.webp" as="image" fetchpriority="high" />
   </head>
   <body>
@@ -45,9 +57,9 @@
 
     <header class="site-header" id="top">
       <div class="shell header-inner">
-        <a class="brand" href="#top" aria-label="Com1, back to top">
+        <a class="brand" href="#top" aria-label="Comone, back to top">
           <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
-          <span class="brand-name">COM<span>1</span></span>
+          <span class="brand-name">COM<span>ONE</span></span>
           <span class="brand-divider" aria-hidden="true"></span>
           <span class="brand-subtitle">HARDWARE APPLIANCE</span>
         </a>
@@ -63,8 +75,8 @@
         <div class="header-actions">
           <a
             class="header-phone"
-            href="tel:+919884019019"
-            aria-label="Call Com1 on +91 98840 19019"
+            href="tel:+919911109040"
+            aria-label="Call Cromptech Integrated Solutions on +91 99111 09040"
           >
             <svg class="icon" aria-hidden="true"><use href="#phone"></use></svg>
           </a>
@@ -91,15 +103,17 @@
         <div class="hero-overlay" aria-hidden="true"></div>
         <div class="shell hero-inner">
           <div class="hero-copy">
-            <p class="eyebrow hero-eyebrow">
-              <span class="status-dot"></span> COM1 / HARDWARE APPLIANCE
+            <p class="eyebrow hero-eyebrow animate__animated animate__fadeInUp">
+              <span class="status-dot"></span> COMONE / HARDWARE APPLIANCE
             </p>
-            <h1 id="hero-title">THE COM1<br />APPLIANCE<span class="hero-period">.</span></h1>
-            <p class="hero-description">
+            <h1 class="animate__animated animate__fadeInUp" id="hero-title">
+              THE COMONE<br />APPLIANCE<span class="hero-period">.</span>
+            </h1>
+            <p class="hero-description animate__animated animate__fadeInUp">
               A practical 2U rack-mount hardware appliance for basic PBX applications and call
               center operations.
             </p>
-            <a class="button button-outline" href="#overview"
+            <a class="button button-outline animate__animated animate__fadeInUp" href="#overview"
               >EXPLORE THE APPLIANCE
               <svg class="icon" aria-hidden="true"><use href="#arrow-right"></use></svg
             ></a>
@@ -113,14 +127,14 @@
             >
           </div>
         </div>
-        <div class="hero-side-note" aria-hidden="true">HARDWARE APPLIANCE / COM1</div>
+        <div class="hero-side-note" aria-hidden="true">HARDWARE APPLIANCE / COMONE</div>
       </section>
 
       <section class="overview section-shell" id="overview" aria-labelledby="overview-title">
         <div class="shell">
-          <div class="section-heading">
+          <div class="section-heading" data-reveal>
             <div>
-              <p class="eyebrow muted-eyebrow">THE COM1 HARDWARE APPLIANCE</p>
+              <p class="eyebrow muted-eyebrow">THE COMONE HARDWARE APPLIANCE</p>
               <h2 id="overview-title">THE ESSENTIALS, BY DESIGN.</h2>
             </div>
             <a class="text-link section-link" href="#specifications"
@@ -129,14 +143,23 @@
             ></a>
           </div>
           <div class="feature-grid">
-            <a class="feature-card" href="#spec-cabinet">
+            <a class="feature-card" data-reveal href="#spec-cabinet">
               <div class="feature-image">
                 <img
                   src="./images/appliance-rack.webp"
+                  srcset="
+                    ./images/responsive/appliance-rack-320.webp 320w,
+                    ./images/responsive/appliance-rack-384.webp 384w,
+                    ./images/responsive/appliance-rack-640.webp 640w,
+                    ./images/responsive/appliance-rack-960.webp 960w
+                  "
+                  sizes="(max-width: 500px) calc(50vw - 26px), (max-width: 760px) calc(50vw - 27px), (min-width: 1568px) 330px, calc(22vw - 15px)"
                   alt=""
                   width="1254"
                   height="1254"
                   loading="lazy"
+                  decoding="async"
+                  fetchpriority="low"
                 /><span class="image-number">01 / 04</span>
               </div>
               <div class="feature-copy">
@@ -148,14 +171,23 @@
                 <p>Metal cabinet with rack-mount kit</p>
               </div>
             </a>
-            <a class="feature-card" href="#spec-storage">
+            <a class="feature-card" data-reveal href="#spec-storage">
               <div class="feature-image">
                 <img
                   src="./images/appliance-storage.webp"
+                  srcset="
+                    ./images/responsive/appliance-storage-320.webp 320w,
+                    ./images/responsive/appliance-storage-384.webp 384w,
+                    ./images/responsive/appliance-storage-640.webp 640w,
+                    ./images/responsive/appliance-storage-960.webp 960w
+                  "
+                  sizes="(max-width: 500px) calc(50vw - 26px), (max-width: 760px) calc(50vw - 27px), (min-width: 1568px) 330px, calc(22vw - 15px)"
                   alt=""
                   width="1254"
                   height="1254"
                   loading="lazy"
+                  decoding="async"
+                  fetchpriority="low"
                 /><span class="image-number">02 / 04</span>
               </div>
               <div class="feature-copy">
@@ -167,14 +199,23 @@
                 <p>Up to 40,000 hours of recordings</p>
               </div>
             </a>
-            <a class="feature-card" href="#connectivity">
+            <a class="feature-card" data-reveal href="#connectivity">
               <div class="feature-image">
                 <img
                   src="./images/appliance-network.webp"
+                  srcset="
+                    ./images/responsive/appliance-network-320.webp 320w,
+                    ./images/responsive/appliance-network-384.webp 384w,
+                    ./images/responsive/appliance-network-640.webp 640w,
+                    ./images/responsive/appliance-network-960.webp 960w
+                  "
+                  sizes="(max-width: 500px) calc(50vw - 26px), (max-width: 760px) calc(50vw - 27px), (min-width: 1568px) 330px, calc(22vw - 15px)"
                   alt=""
                   width="1254"
                   height="1254"
                   loading="lazy"
+                  decoding="async"
+                  fetchpriority="low"
                 /><span class="image-number">03 / 04</span>
               </div>
               <div class="feature-copy">
@@ -186,14 +227,23 @@
                 <p>Onboard and PCI-based network cards</p>
               </div>
             </a>
-            <a class="feature-card" href="#appliance">
+            <a class="feature-card" data-reveal href="#appliance">
               <div class="feature-image">
                 <img
                   src="./images/appliance-components.webp"
+                  srcset="
+                    ./images/responsive/appliance-components-320.webp 320w,
+                    ./images/responsive/appliance-components-384.webp 384w,
+                    ./images/responsive/appliance-components-640.webp 640w,
+                    ./images/responsive/appliance-components-960.webp 960w
+                  "
+                  sizes="(max-width: 500px) calc(50vw - 26px), (max-width: 760px) calc(50vw - 27px), (min-width: 1568px) 330px, calc(22vw - 15px)"
                   alt=""
                   width="1254"
                   height="1254"
                   loading="lazy"
+                  decoding="async"
+                  fetchpriority="low"
                 /><span class="image-number">04 / 04</span>
               </div>
               <div class="feature-copy">
@@ -211,17 +261,26 @@
 
       <section class="technology" id="appliance" aria-labelledby="appliance-title">
         <div class="shell technology-grid ruled-section">
-          <div class="technology-image image-frame">
+          <div class="technology-image image-frame" data-reveal>
             <img
               src="./images/appliance-detail.webp"
+              srcset="
+                ./images/responsive/appliance-detail-480.webp   480w,
+                ./images/responsive/appliance-detail-720.webp   720w,
+                ./images/responsive/appliance-detail-960.webp   960w,
+                ./images/responsive/appliance-detail-1440.webp 1440w
+              "
+              sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 760px) calc(50vw - 35px), 55vw"
               alt="Close-up of a rack-mount server's metal ventilation panel"
               width="1728"
               height="910"
               loading="lazy"
+              decoding="async"
+              fetchpriority="low"
             />
-            <span class="image-caption">COM1 / HARDWARE APPLIANCE</span>
+            <span class="image-caption">COMONE / HARDWARE APPLIANCE</span>
           </div>
-          <div class="technology-copy">
+          <div class="technology-copy" data-reveal>
             <p class="eyebrow muted-eyebrow">PRACTICAL BY DESIGN</p>
             <h2 id="appliance-title">BUILT TO BE<br />SERVICEABLE.</h2>
             <p>
@@ -233,7 +292,7 @@
               <svg class="icon" aria-hidden="true"><use href="#arrow-right"></use></svg
             ></a>
           </div>
-          <div class="technology-benefits" aria-label="Appliance highlights">
+          <div class="technology-benefits" data-reveal aria-label="Appliance highlights">
             <div class="benefit">
               <span class="benefit-icon"
                 ><svg class="icon" aria-hidden="true"><use href="#server"></use></svg
@@ -267,17 +326,26 @@
 
       <section class="applications" id="connectivity" aria-labelledby="connectivity-title">
         <div class="shell applications-grid ruled-section">
-          <div class="application-image image-frame">
+          <div class="application-image image-frame" data-reveal>
             <img
               src="./images/appliance-connectivity.webp"
+              srcset="
+                ./images/responsive/appliance-connectivity-480.webp   480w,
+                ./images/responsive/appliance-connectivity-720.webp   720w,
+                ./images/responsive/appliance-connectivity-960.webp   960w,
+                ./images/responsive/appliance-connectivity-1440.webp 1440w
+              "
+              sizes="(max-width: 500px) calc(100vw - 40px), (max-width: 760px) calc(50vw - 35px), 55vw"
               alt="Ethernet cables connected to the back of a rack-mount server"
               width="1737"
               height="906"
               loading="lazy"
+              decoding="async"
+              fetchpriority="low"
             />
-            <span class="image-caption">NETWORK CONNECTIVITY / COM1</span>
+            <span class="image-caption">NETWORK CONNECTIVITY / COMONE</span>
           </div>
-          <div class="applications-copy">
+          <div class="applications-copy" data-reveal>
             <p class="eyebrow muted-eyebrow">NETWORK CONNECTIVITY</p>
             <h2 id="connectivity-title">READY TO<br />CONNECT.</h2>
             <p>
@@ -299,24 +367,30 @@
 
       <section class="details-section" id="specifications" aria-labelledby="specifications-title">
         <div class="shell details-grid ruled-section">
-          <div class="details-intro">
+          <div class="details-intro" data-reveal>
             <p class="eyebrow muted-eyebrow">HARDWARE SPECIFICATIONS</p>
             <h2 id="specifications-title">WHAT'S<br />INSIDE.</h2>
-            <p>A closer look at the components listed for the Com1 hardware appliance.</p>
+            <p>A closer look at the components listed for the Comone hardware appliance.</p>
             <p class="spec-intro-note">
               Higher-capacity storage and extra LAN cards can be requested when ordering, at an
               additional cost.
             </p>
-            <a class="text-link underlined-link" href="#contact"
-              >DISCUSS YOUR REQUIREMENTS
-              <svg class="icon" aria-hidden="true"><use href="#arrow-right"></use></svg
-            ></a>
+            <div class="spec-intro-actions">
+              <a class="text-link underlined-link" href="#server-details"
+                >EXPLORE SERVER DETAILS
+                <svg class="icon" aria-hidden="true"><use href="#arrow-right"></use></svg
+              ></a>
+              <a class="text-link underlined-link" href="#contact"
+                >DISCUSS YOUR REQUIREMENTS
+                <svg class="icon" aria-hidden="true"><use href="#arrow-right"></use></svg
+              ></a>
+            </div>
           </div>
-          <div class="specifications-content">
+          <div class="specifications-content" id="react-specifications" data-reveal>
             <div class="spec-table-wrap">
               <table class="spec-table">
                 <caption class="visually-hidden">
-                  Com1 hardware appliance specifications
+                  Comone hardware appliance specifications
                 </caption>
                 <thead>
                   <tr>
@@ -369,13 +443,96 @@
               recordings.
             </p>
           </div>
-          <div class="deployment-note">
+        </div>
+      </section>
+
+      <section class="server-details" id="server-details" aria-labelledby="server-details-title">
+        <div class="shell server-details-shell ruled-section">
+          <div class="server-details-heading" data-reveal>
+            <div>
+              <p class="eyebrow muted-eyebrow">SERVER / IN DETAIL</p>
+              <h2 id="server-details-title">PLAN YOUR<br />CONFIGURATION.</h2>
+            </div>
+            <div class="server-details-intro">
+              <p>
+                A closer look at the listed hardware, its intended workload and the options to
+                discuss before ordering.
+              </p>
+              <a
+                class="text-link underlined-link"
+                href="https://com1pbx.com/com1-ippbx-solution-ip-based-pa-system"
+                target="_blank"
+                rel="noopener noreferrer"
+                >READ THE ORIGINAL SOURCE
+                <svg class="icon" aria-hidden="true"><use href="#arrow-up-right"></use></svg
+              ></a>
+            </div>
+          </div>
+
+          <div class="server-detail-grid">
+            <article class="server-detail-card" data-reveal>
+              <p class="server-detail-number">01 / PLATFORM</p>
+              <h3>Rack-ready hardware</h3>
+              <p>
+                The 2U metal cabinet comes with a rack-mounting kit. The listed build includes a
+                PowerX or equivalent H81 motherboard, an Intel i3 below 5th generation, DDR3 PCL RAM
+                and a Fingers or equivalent Mini ATX power supply.
+              </p>
+            </article>
+            <article class="server-detail-card" data-reveal>
+              <p class="server-detail-number">02 / STORAGE</p>
+              <h3>Capacity for recordings</h3>
+              <p>
+                The default 256 GB NVMe SSD is Crucial or equivalent. The source quotes up to 40,000
+                hours of conversation recordings; a higher-capacity drive can be specified when
+                ordering at an additional cost.
+              </p>
+            </article>
+            <article class="server-detail-card" data-reveal>
+              <p class="server-detail-number">03 / NETWORK</p>
+              <h3>Onboard + PCI Express</h3>
+              <p>
+                An onboard network card and a gigabit, single-port PCI Express LAN card are listed
+                for VPN-based SIP trunks from Indian telecom operators. Extra cards for trunks from
+                different providers must be specified when ordering and cost extra.
+              </p>
+            </article>
+            <article class="server-detail-card" data-reveal>
+              <p class="server-detail-number">04 / WORKLOAD</p>
+              <h3>Know the stated limits</h3>
+              <p>
+                The appliance is listed for basic PBX applications with up to 2,000 extensions and
+                call center operations with up to 25 agents. Confirm suitability for your actual
+                workload with the supplier.
+              </p>
+            </article>
+            <article class="server-detail-card" data-reveal>
+              <p class="server-detail-number">05 / MAINTENANCE</p>
+              <h3>Service and restore</h3>
+              <p>
+                Standard, globally available components support local maintenance. The appliance
+                also includes a database backup and restore option; confirm the backup procedure for
+                your deployment.
+              </p>
+            </article>
+            <article class="server-detail-card" data-reveal>
+              <p class="server-detail-number">06 / BEFORE YOU ORDER</p>
+              <h3>Confirm the configuration</h3>
+              <p>
+                RAM capacity, the exact processor model and power-supply wattage are not stated in
+                the source. Confirm these, equivalent components and the price of any larger drive
+                or additional LAN cards with the supplier.
+              </p>
+            </article>
+          </div>
+
+          <div class="deployment-note" data-reveal>
             <p class="eyebrow muted-eyebrow">DEPLOYMENT GUIDANCE</p>
             <div>
               <h3>FOR CRITICAL APPLICATIONS</h3>
               <p>
                 For mission-critical operations, or predictive dialing or ACD with more than 25
-                agents, Com1 recommends using your own high-performance hardware.
+                agents, Comone recommends using your own high-performance hardware.
               </p>
             </div>
           </div>
@@ -384,21 +541,48 @@
 
       <section class="contact-section" id="contact" aria-labelledby="contact-title">
         <div class="shell contact-grid ruled-section">
-          <div>
+          <div class="contact-intro" data-reveal>
             <p class="eyebrow muted-eyebrow">LET'S START A CONVERSATION</p>
             <h2 id="contact-title">LET'S TALK ABOUT<br />YOUR APPLIANCE.</h2>
-          </div>
-          <div class="contact-copy">
-            <p>Discuss your hardware and connectivity requirements with Com1.</p>
+            <p>Discuss your hardware and connectivity requirements with our authorised dealer.</p>
             <a
               class="button button-outline"
-              href="mailto:srini@trust.co.in?subject=Com1%20Hardware%20Appliance%20Enquiry"
+              href="mailto:sandeep@cromptechindia.com?subject=Comone%20Hardware%20Appliance%20Enquiry"
               >ENQUIRE NOW <svg class="icon" aria-hidden="true"><use href="#arrow-right"></use></svg
             ></a>
-            <a class="contact-phone" href="tel:+919884019019"
-              >OR CALL +91 98840 19019
-              <svg class="icon" aria-hidden="true"><use href="#arrow-up-right"></use></svg
-            ></a>
+          </div>
+          <div class="dealer-card" data-reveal>
+            <p class="eyebrow muted-eyebrow">AUTHORISED DEALER</p>
+            <h3>Cromptech Integrated Solutions Pvt. Ltd.</h3>
+            <address class="dealer-contact">
+              <dl class="dealer-details">
+                <div>
+                  <dt>ADDRESS</dt>
+                  <dd>6/14, W.E.A., Karol Bagh,<br />New Delhi-110005</dd>
+                </div>
+                <div>
+                  <dt>OFFICE</dt>
+                  <dd class="dealer-phone-list">
+                    <a href="tel:+911145571045">011-45571045</a>
+                    <a href="tel:+911141057015">011-41057015</a>
+                    <a href="tel:+911147013256">011-47013256</a>
+                  </dd>
+                </div>
+                <div>
+                  <dt>MOBILE</dt>
+                  <dd class="dealer-phone-list">
+                    <a href="tel:+919911109040">+91-9911109040</a>
+                    <a href="tel:+917982988622">+91-7982988622</a>
+                  </dd>
+                </div>
+                <div>
+                  <dt>EMAIL</dt>
+                  <dd>
+                    <a href="mailto:sandeep@cromptechindia.com">sandeep@cromptechindia.com</a>
+                  </dd>
+                </div>
+              </dl>
+            </address>
           </div>
         </div>
       </section>
@@ -406,9 +590,9 @@
 
     <footer class="site-footer">
       <div class="shell footer-inner">
-        <a class="brand footer-brand" href="#top" aria-label="Com1, back to top"
+        <a class="brand footer-brand" href="#top" aria-label="Comone, back to top"
           ><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span
-          ><span class="brand-name">COM<span>1</span></span></a
+          ><span class="brand-name">COM<span>ONE</span></span></a
         >
         <nav class="footer-nav" aria-label="Footer navigation">
           <a href="#overview">Overview</a><a href="#appliance">The appliance</a
@@ -421,7 +605,7 @@
             rel="noopener noreferrer"
             >ORIGINAL SOURCE
             <svg class="icon" aria-hidden="true"><use href="#arrow-up-right"></use></svg></a
-          ><span>© 2026 COM1</span>
+          ><span>© 2026 COMONE</span>
         </div>
       </div>
       <div class="shell footer-note">
@@ -429,5 +613,6 @@
       </div>
     </footer>
     <script type="module" src="./src/main.js"></script>
+    <script type="module" src="./src/react-loader.js"></script>
   </body>
 </html>

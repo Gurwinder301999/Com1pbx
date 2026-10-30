@@ -21,3 +21,24 @@ document.addEventListener('keydown', (event) => {
     menuButton.focus();
   }
 });
+
+const canAnimate =
+  'IntersectionObserver' in window &&
+  window.matchMedia?.('(prefers-reduced-motion: no-preference)').matches;
+
+if (canAnimate) {
+  const observer = new IntersectionObserver(
+    (entries, currentObserver) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          currentObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1, rootMargin: '0px 0px -6% 0px' },
+  );
+
+  document.querySelectorAll('[data-reveal]').forEach((element) => observer.observe(element));
+  document.documentElement.classList.add('motion-ready');
+}
