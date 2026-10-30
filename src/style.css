@@ -535,10 +535,10 @@ h2 {
 }
 .technology-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.8fr) minmax(170px, 0.52fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
-  gap: clamp(32px, 4.4vw, 68px);
-  padding-block: 32px;
+  gap: 42px clamp(50px, 7vw, 110px);
+  padding-block: 72px 64px;
 }
 .image-frame {
   position: relative;
@@ -583,21 +583,43 @@ h2 {
   line-height: 1.9;
 }
 .technology-copy > p:not(.eyebrow) {
-  max-width: 380px;
-  margin-bottom: 27px;
+  max-width: 540px;
+  margin-bottom: 15px;
+}
+.technology-copy > p.about-lead {
+  color: #d0d1ce;
+  font-size: 15px;
+  line-height: 1.8;
+}
+.technology-copy > p.about-dealer {
+  color: #969794;
+  font-size: 12px;
+}
+.about-dealer strong {
+  color: #d0d1ce;
+  font-weight: 600;
+}
+.about-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 16px 28px;
+  margin-top: 25px;
 }
 .underlined-link {
   padding-bottom: 9px;
   border-bottom: 1px solid #82827e;
 }
 .technology-benefits {
-  min-height: 230px;
-  border-left: 1px solid #303133;
-  padding-left: 31px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 27px;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  padding-top: 26px;
+  border-top: 1px solid #303133;
+}
+.technology-benefits-label {
+  grid-column: 1 / -1;
 }
 .benefit {
   display: flex;
@@ -991,10 +1013,7 @@ h2 {
   }
   .technology-grid {
     gap: 30px;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr) minmax(155px, 0.56fr);
-  }
-  .technology-benefits {
-    padding-left: 20px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .benefit {
     gap: 10px;
@@ -1224,6 +1243,31 @@ h2 {
   }
 }
 
+@media (max-width: 700px) {
+  .technology-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .technology-image {
+    aspect-ratio: 1.6;
+  }
+  .technology-copy {
+    padding: 4px 0 6px;
+  }
+  .technology-benefits {
+    grid-column: auto;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .benefit {
+    align-items: center;
+    gap: 15px;
+  }
+  .benefit h3 {
+    font-size: 9px;
+  }
+}
+
 @media (max-width: 500px) {
   .hero {
     height: min(740px, 91svh);
@@ -1276,28 +1320,12 @@ h2 {
   .feature-copy > p:last-child {
     font-size: 10px;
   }
-  .technology-grid,
   .applications-grid {
     grid-template-columns: 1fr;
     gap: 28px;
   }
   .technology-image {
     aspect-ratio: 1.42;
-  }
-  .technology-copy {
-    padding: 4px 0 6px;
-  }
-  .technology-benefits {
-    grid-column: auto;
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-  .benefit {
-    align-items: center;
-    gap: 15px;
-  }
-  .benefit h3 {
-    font-size: 9px;
   }
   .application-image {
     aspect-ratio: 1.65;
