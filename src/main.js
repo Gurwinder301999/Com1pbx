@@ -1,6 +1,3 @@
-import '@fontsource-variable/manrope';
-import './style.css';
-
 const menuButton = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('.main-nav');
 
