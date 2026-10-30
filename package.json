@@ -1,0 +1,17 @@
+{
+  "name": "com1-hardware-appliance",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0"
+  },
+  "dependencies": {
+    "@fontsource-variable/manrope": "^5.2.8"
+  },
+  "devDependencies": {
+    "vite": "^7.2.2"
+  }
+}
