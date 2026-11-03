@@ -28,3 +28,13 @@ Images use locally generated, responsive WebP sizes, and the hero image and font
 ## GitHub Pages
 
 The repository includes a GitHub Actions workflow that installs dependencies, runs the Vite production build, and deploys `dist/` through the official Pages actions. The source can also be published directly from the repository root: scripts, styles, fonts, and images use relative paths so they work under the `/Com1pbx/` project URL without a build step. Keep the generated assets in the repository when publishing the raw site; `.nojekyll` is copied into production builds to prevent Jekyll processing.
+
+## Responsively App design snapshot
+
+`responsively-app/` contains a separate, vendored snapshot of the
+[Responsively App](https://github.com/responsively-org/responsively-app) Electron
+desktop renderer. It was brought into this workspace to fix and improve the
+renderer's design system; it is unrelated to the Comone static site and is not
+part of the GitHub Pages deployment. See
+[`responsively-app/DESIGN_CHANGES.md`](responsively-app/DESIGN_CHANGES.md) for the
+audit, changes, and validation results.

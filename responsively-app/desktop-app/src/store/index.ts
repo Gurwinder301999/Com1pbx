@@ -1,0 +1,356 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- store schema typing lands with the v11 typed-store refactor */
+import path from 'path';
+import {app} from 'electron';
+import {homedir} from 'os';
+import {DOCK_POSITION, PREVIEW_LAYOUTS} from '../common/constants';
+import {migrations} from './migrations';
+
+if (process.env.E2E_USER_DATA_DIR) {
+  app.setPath('userData', process.env.E2E_USER_DATA_DIR);
+}
+
+import ElectronStore from 'electron-store';
+
+// electron-store 11 is ESM-only; the class arrives as the module default.
+// Kept loosely typed for now — the schema below predates the stricter v11
+// generics (proper typing lands with the store refactor).
+const Store = ElectronStore as any;
+
+const schema = {
+  ui: {
+    type: 'object',
+    properties: {
+      darkMode: {
+        type: 'boolean',
+        default: true,
+      },
+      previewLayout: {
+        enum: Object.values(PREVIEW_LAYOUTS),
+        default: PREVIEW_LAYOUTS.FLEX,
+      },
+      announcements: {
+        type: 'object',
+        properties: {
+          // Nullable: the renderer persists the whole object, and "never" is
+          // null in state.
+          seenVersion: {type: ['string', 'null']},
+          supportShownAt: {type: ['number', 'null']},
+          supportHidden: {type: 'boolean'},
+        },
+      },
+    },
+  },
+  renderer: {
+    type: 'object',
+    properties: {
+      individualZoomStepIndex: {
+        type: 'number',
+        default: 8,
+      },
+      zoomStepIndex: {
+        type: 'number',
+        default: 3,
+      },
+      // Canvas view options (device frames, names, resolutions). Persisted as
+      // one object; the renderer merges it over its defaults on boot.
+      canvasOptions: {
+        type: 'object',
+        properties: {
+          showBezels: {type: 'boolean'},
+          showNames: {type: 'boolean'},
+          showDims: {type: 'boolean'},
+        },
+      },
+    },
+    default: {},
+  },
+  devtools: {
+    type: 'object',
+    properties: {
+      dockPosition: {
+        type: 'string',
+        enum: Object.keys(DOCK_POSITION),
+        default: DOCK_POSITION.BOTTOM,
+      },
+    },
+    default: {},
+  },
+  deviceManager: {
+    type: 'object',
+    properties: {
+      // Not legacy: hydrates the active device set on boot (preloadedState),
+      // is rewritten on every device change (persistence listener), and feeds
+      // the 1.2.0 migration for configs predating preview suites.
+      activeDevices: {
+        type: 'array',
+        items: {
+          type: 'string',
+        },
+        default: ['10008', '10013', '10015'],
+      },
+      previewSuites: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+            },
+            name: {
+              type: 'string',
+            },
+            devices: {
+              type: 'array',
+              items: {
+                type: 'string',
+              },
+            },
+            canvasPositions: {
+              type: 'object',
+              additionalProperties: {
+                type: 'object',
+                properties: {
+                  x: {type: 'number'},
+                  y: {type: 'number'},
+                },
+              },
+            },
+          },
+        },
+        default: [
+          {
+            id: 'default',
+            name: 'Default',
+            devices: ['10008', '10013', '10015'],
+          },
+        ],
+      },
+      customDevices: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+            },
+            name: {
+              type: 'string',
+            },
+            width: {
+              type: 'number',
+            },
+            height: {
+              type: 'number',
+            },
+            userAgent: {
+              type: 'string',
+            },
+            type: {
+              type: 'string',
+            },
+            dpr: {
+              type: 'number',
+            },
+            isTouchCapable: {
+              type: 'boolean',
+            },
+            isMobileCapable: {
+              type: 'boolean',
+            },
+            capabilities: {
+              type: 'array',
+              items: {
+                type: 'string',
+              },
+              default: [],
+            },
+            isCustom: {
+              type: 'boolean',
+              default: true,
+            },
+          },
+        },
+        default: [],
+      },
+    },
+    default: {},
+  },
+  userPreferences: {
+    type: 'object',
+    properties: {
+      webRequestHeaderAcceptLanguage: {
+        type: 'string',
+        default: '',
+      },
+      allowInsecureSSLConnections: {
+        type: 'boolean',
+        default: false,
+      },
+      popupBehavior: {
+        type: 'string',
+        enum: ['in-preview', 'external'],
+        default: 'in-preview',
+      },
+      mcpEnabled: {
+        type: 'boolean',
+        default: true,
+      },
+      guides: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            positions: {
+              type: 'array',
+              items: {
+                type: 'number',
+              },
+            },
+            is_vertical: {
+              type: 'boolean',
+            },
+            resolution: {
+              type: 'string',
+            },
+          },
+          default: {},
+        },
+        default: [],
+      },
+      screenshot: {
+        type: 'object',
+        properties: {
+          saveLocation: {
+            type: 'string',
+            default: path.join(homedir(), `Desktop/Responsively-Screenshots`),
+          },
+        },
+        default: {},
+      },
+      designOverlays: {
+        type: 'object',
+        additionalProperties: {
+          type: 'object',
+          properties: {
+            image: {type: 'string'},
+            opacity: {type: 'number'},
+            position: {type: 'string', enum: ['overlay', 'side']},
+            enabled: {type: 'boolean'},
+            fileName: {type: 'string'},
+          },
+        },
+        default: {},
+      },
+    },
+    default: {},
+  },
+  webPermissions: {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        origin: {
+          type: 'string',
+        },
+        permissions: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              type: {
+                type: 'string',
+              },
+              status: {
+                type: 'string',
+                enum: ['GRANTED', 'DENIED'],
+              },
+            },
+          },
+        },
+      },
+    },
+    default: [],
+  },
+  history: {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        url: {
+          type: 'string',
+        },
+        title: {
+          type: 'string',
+        },
+        lastVisited: {
+          type: 'number',
+        },
+      },
+    },
+    default: [],
+  },
+  homepage: {
+    type: 'string',
+    default: 'https://www.google.com/',
+  },
+  windowState: {
+    type: 'object',
+    properties: {
+      x: {type: 'number'},
+      y: {type: 'number'},
+      width: {type: 'number'},
+      height: {type: 'number'},
+      isMaximized: {type: 'boolean'},
+    },
+    default: {},
+  },
+  seenReleaseNotes: {
+    type: 'array',
+    items: {
+      type: 'string',
+    },
+    default: [],
+  },
+  bookmarks: {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        id: {
+          type: 'string',
+        },
+        name: {
+          type: 'string',
+        },
+        address: {
+          type: 'string',
+        },
+      },
+    },
+    default: [],
+  },
+  sponsorship: {
+    type: 'object',
+    properties: {
+      lastShown: {
+        type: 'number',
+      },
+    },
+    default: {},
+  },
+} as const;
+
+const store = new Store({
+  schema,
+  watch: true,
+  migrations,
+});
+
+// Keys the renderer may touch through the electron-store IPC bridge.
+// windowState is main-process-only.
+const RENDERER_STORE_ROOTS = new Set(Object.keys(schema).filter((key) => key !== 'windowState'));
+
+export const isRendererStoreKey = (property: unknown): property is string =>
+  typeof property === 'string' && RENDERER_STORE_ROOTS.has(property.split('.')[0]);
+
+export default store;

@@ -1,0 +1,244 @@
+{
+  "name": "Responsively-App",
+  "productName": "ResponsivelyApp",
+  "version": "2.0.0-beta.0",
+  "description": "A developer-friendly browser for developing responsive web apps",
+  "keywords": [
+    "developer-tools",
+    "devtools",
+    "browser",
+    "web-dev"
+  ],
+  "homepage": "https://responsively.app",
+  "bugs": {
+    "url": "https://github.com/responsively-org/responsively-app/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/responsively-org/responsively-app.git"
+  },
+  "author": {
+    "name": "Responsively",
+    "email": "p.manoj.vivek@gmail.com"
+  },
+  "license": "MIT",
+  "main": "./src/main/main.ts",
+  "scripts": {
+    "build": "concurrently \"yarn run build:main\" \"yarn run build:renderer\" \"yarn run build:mcp\"",
+    "build:main": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.main.prod.ts",
+    "build:renderer": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.prod.ts",
+    "build:mcp": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.mcp-cli.ts && tsx ./.erb/scripts/generate-mcp-manifest.ts",
+    "postinstall": "yarn rimraf --glob node_modules/browser-sync/dist/**/*.map && tsx .erb/scripts/check-native-dep.js && tsx postinstall.ts && electron-builder install-app-deps && cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.dev.dll.ts && node node_modules/electron/install.js",
+    "lint": "eslint . --max-warnings 0",
+    "package": "tsx ./.erb/scripts/clean.js dist && yarn run build && electron-builder build --publish never",
+    "prepare": "lefthook install",
+    "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
+    "dev": "yarn start",
+    "start": "tsx ./.erb/scripts/check-port-in-use.js && yarn run start:renderer",
+    "start:main": "cross-env NODE_ENV=development electronmon ./src/main/dev-entry.cjs --enable-logging=stderr --log-level=3",
+    "start:preload": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.preload.dev.ts",
+    "start:preloadWebview": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.preload-webview.dev.ts",
+    "start:renderer": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./.erb/configs/webpack.config.renderer.dev.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test --config=e2e/playwright.config.ts",
+    "test:e2e:headless": "cross-env E2E_HEADLESS=true playwright test --config=e2e/playwright.config.ts",
+    "test:e2e:headed": "playwright test --config=e2e/playwright.config.ts --headed",
+    "test:e2e:debug": "playwright test --config=e2e/playwright.config.ts --debug",
+    "typecheck": "tsc --noEmit"
+  },
+  "browserslist": [],
+  "dependencies": {
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/lato": "^5.3.0",
+    "@headlessui/react": "^2.2.10",
+    "@iconify/react": "^6.0.2",
+    "@modelcontextprotocol/sdk": "^1.31.0",
+    "@reduxjs/toolkit": "^2.13.0",
+    "@scena/react-guides": "^0.28.2",
+    "browser-sync": "^3.0.4",
+    "classnames": "^2.5.1",
+    "electron-args": "^0.1.0",
+    "electron-debug": "^5.0.0",
+    "electron-log": "^5.4.4",
+    "electron-store": "^11.0.2",
+    "electron-updater": "^6.8.10",
+    "javascript-time-ago": "^2.6.4",
+    "mousetrap": "^1.6.5",
+    "re-resizable": "^6.11.2",
+    "react": "^19.3.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-dom": "^19.3.0",
+    "react-markdown": "^10.1.0",
+    "react-redux": "^9.3.0",
+    "react-tabs": "^6.1.1",
+    "redux": "^5.0.1",
+    "redux-thunk": "^3.1.0",
+    "use-sound": "^5.0.0",
+    "uuid": "^14.0.2",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@electron/notarize": "^3.1.1",
+    "@electron/rebuild": "^4.2.0",
+    "@playwright/test": "^1.63.0",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.6.3",
+    "@svgr/webpack": "^8.1.0",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@tailwindcss/typography": "^0.5.20",
+    "@teamsupercell/typings-for-css-modules-loader": "^2.5.2",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@types/browser-sync": "^2.29.1",
+    "@types/howler": "^2.2.13",
+    "@types/mousetrap": "^1.6.15",
+    "@types/node": "^24.19.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/webpack-bundle-analyzer": "^4.7.0",
+    "concurrently": "^10.0.5",
+    "core-js": "^3.50.0",
+    "cross-env": "^10.1.0",
+    "css-loader": "^7.1.5",
+    "css-minimizer-webpack-plugin": "^8.0.0",
+    "detect-port": "^2.1.0",
+    "electron": "44.5.1",
+    "electron-builder": "^26.17.0",
+    "electron-devtools-installer": "^4.0.0",
+    "electronmon": "^2.0.4",
+    "eslint": "^9.39.5",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.5",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-prettier": "^5.5.6",
+    "eslint-plugin-promise": "^7.3.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "file-loader": "^6.2.0",
+    "globals": "^17.13.0",
+    "html-webpack-plugin": "^5.6.8",
+    "identity-obj-proxy": "^3.0.0",
+    "jsdom": "^30.1.1",
+    "lefthook": "^2.1.15",
+    "mini-css-extract-plugin": "^2.10.2",
+    "picocolors": "^1.1.1",
+    "postcss": "^8.5.28",
+    "postcss-loader": "^8.2.1",
+    "prettier": "^3.9.9",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "react-refresh": "^0.19.0",
+    "replace-in-file": "^9.0.0",
+    "rimraf": "^6.1.3",
+    "style-loader": "^4.0.0",
+    "tailwindcss": "^4.3.3",
+    "terser-webpack-plugin": "^5.6.1",
+    "ts-loader": "^9.6.2",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths-webpack-plugin": "^4.2.0",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.0",
+    "url-loader": "^4.1.1",
+    "vitest": "^4.1.11",
+    "webpack": "^5.111.1",
+    "webpack-bundle-analyzer": "^5.4.0",
+    "webpack-cli": "^7.2.3",
+    "webpack-dev-server": "^6.0.0",
+    "webpack-merge": "^6.0.1"
+  },
+  "build": {
+    "productName": "ResponsivelyApp",
+    "appId": "app.responsively",
+    "asar": true,
+    "asarUnpack": "**\\*.{node,dll}",
+    "files": [
+      "dist",
+      "!dist/mcp",
+      "node_modules",
+      "package.json"
+    ],
+    "afterSign": ".erb/scripts/notarize.js",
+    "mac": {
+      "target": {
+        "target": "default",
+        "arch": [
+          "arm64",
+          "x64"
+        ]
+      },
+      "type": "distribution",
+      "hardenedRuntime": true,
+      "entitlements": "assets/entitlements.mac.plist",
+      "entitlementsInherit": "assets/entitlements.mac.plist",
+      "gatekeeperAssess": false
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Development"
+    },
+    "directories": {
+      "app": "release/app",
+      "buildResources": "assets",
+      "output": "release/build"
+    },
+    "extraResources": [
+      "./assets/**",
+      {
+        "from": "release/app/dist/mcp",
+        "to": "mcp"
+      },
+      {
+        "from": "src/renderer/components/Previewer/Device/frames/NOTICE.md",
+        "to": "licenses/device-frames-NOTICE.md"
+      }
+    ],
+    "publish": {
+      "provider": "github"
+    }
+  },
+  "collective": {
+    "url": "https://opencollective.com/responsively"
+  },
+  "resolutions": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0"
+  },
+  "engines": {
+    "node": ">=24.x",
+    "npm": ">=7.x"
+  },
+  "electronmon": {
+    "patterns": [
+      "!**/**",
+      "src/main/**/*",
+      "src/store/**/*",
+      "src/common/**/*"
+    ],
+    "logLevel": "quiet"
+  }
+}

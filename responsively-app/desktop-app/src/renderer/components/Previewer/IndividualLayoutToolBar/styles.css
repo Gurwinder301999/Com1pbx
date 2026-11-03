@@ -1,0 +1,25 @@
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar,
+.custom-scrollbar::-webkit-scrollbar:hover {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb,
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--line);
+  border-radius: 999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
